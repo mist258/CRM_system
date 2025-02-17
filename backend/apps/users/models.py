@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.validators import RegexValidator
 from django.db import models
 
 from core.models import BaseModel
@@ -21,6 +22,13 @@ class UserCustomModel(AbstractBaseUser, PermissionsMixin, BaseModel): # main
 
 
 class UserProfileModel(BaseModel): # submain
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
+    class Meta:
+        db_table = 'profile'
+
+    name = models.CharField(max_length=25, validators=[
+        RegexValidator(regex=r'^[A-Za-z]*$')],
+                            error_messages={'Detail': 'Name is not valid'})
+    surname = models.CharField(max_length=25, validators=[
+        RegexValidator(regex=r'^[A-Za-z]*$')],
+                               error_messages={'Detail': 'Surname is not valid'})
     user = models.OneToOneField(UserCustomModel, on_delete=models.CASCADE, related_name='profile')
