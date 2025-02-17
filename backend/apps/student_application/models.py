@@ -16,17 +16,17 @@ class StudentApplicationModel(BaseModel):
     phone = models.CharField(max_length=255)
     age = models.IntegerField()
     course = models.CharField(max_length=4, choices=CoursesChoices.choices,
-                              blank=False, null=False)
+                              blank=True, null=True)
     course_format = models.CharField(max_length=6, choices=FormatCourseChoices.choices,
-                                     blank=False, null=False)
+                                     blank=True, null=True)
     course_type = models.CharField(max_length=9, choices=TypeCourseChoices.choices,
-                                   blank=False, null=False)
+                                   blank=True, null=True)
     status = models.CharField(max_length=8, choices=StatusChoices.choices,
-                               null=True)
+                               blank=True, null=True)
     sum = models.DecimalField(max_digits=5, decimal_places=0,
-                              null=True)
+                              blank=True, null=True)
     alreadyPaid = models.DecimalField(max_digits=5, decimal_places=0,
-                                      null=True)
+                                      blank=True, null=True)
     group = ...
     manager = ...
 

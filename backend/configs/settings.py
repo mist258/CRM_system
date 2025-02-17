@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = ['0.0.0.0']
-
+AUTH_USER_MODEL = 'users.UserCustomModel'
 
 # Application definition
 
@@ -120,7 +120,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images)INSTALLED_APPS = []
+
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'

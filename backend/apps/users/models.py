@@ -6,20 +6,21 @@ from core.models import BaseModel
 from .managers import UserCustomManager
 
 
-class UserCustomModel(AbstractBaseUser, PermissionsMixin, BaseModel):
+class UserCustomModel(AbstractBaseUser, PermissionsMixin, BaseModel): # main
     class Meta:
         db_table = 'user'
         ordering = ('id',)
 
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'email'
     objects = UserCustomManager()
 
 
-class UserProfile(BaseModel):
+class UserProfileModel(BaseModel): # submain
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
+    user = models.OneToOneField(UserCustomModel, on_delete=models.CASCADE, related_name='profile')
