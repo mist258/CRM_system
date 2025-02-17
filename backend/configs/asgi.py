@@ -1,7 +1,7 @@
 """
 ASGI config for configs project.
 
-It exposes the ASGI callable as a module-level variable named ``student_application``.
+It exposes the ASGI callable as a module-level variable named ``orders``.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/

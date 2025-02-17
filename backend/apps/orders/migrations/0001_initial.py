@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('alreadyPaid', models.DecimalField(blank=True, decimal_places=0, max_digits=5, null=True)),
             ],
             options={
-                'db_table': 'student_application',
+                'db_table': 'orders',
                 'ordering': ('id',),
             },
         ),

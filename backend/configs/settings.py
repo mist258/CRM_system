@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'core',
     'apps.users',
     'apps.auth',
-    'apps.student_application',
+    'apps.orders',
 
 ]
 
