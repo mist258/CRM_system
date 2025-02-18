@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import OrdersModel
 
 
-class StudentApplicationSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrdersModel
         fields = ('id',
@@ -18,10 +18,7 @@ class StudentApplicationSerializer(serializers.ModelSerializer):
                   'status',
                   'sum',
                   'alreadyPaid',
-                  'created_at',
-                  'updated_at',
-                  )
+                  'created_at',                  )
         read_only_fields = ('id',
                             'created_at',
-                            'updated_at',
                             )
