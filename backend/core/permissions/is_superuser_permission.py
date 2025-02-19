@@ -5,4 +5,4 @@ class IsSuperUser(BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and
                     request.user.is_superuser and
-                    request.iser.is_staff)
+                    request.user.is_staff)

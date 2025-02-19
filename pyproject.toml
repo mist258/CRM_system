@@ -12,6 +12,7 @@ django-dotenv = "^1.4.2"
 django-filter = "^24.3"
 mysqlclient = "^2.2.7"
 djangorestframework-simplejwt = "^5.4.0"
+drf-yasg = "^1.21.8"
 
 
 [tool.poetry.group.dev.dependencies]
