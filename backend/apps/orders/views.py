@@ -2,8 +2,10 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import generics
 
+from django_filters.rest_framework import DjangoFilterBackend, OrderingFilter
 from drf_yasg.utils import swagger_auto_schema
 
+from .filters import OrderFilter
 from .models import OrdersModel
 from .serializers import OrderSerializer
 
@@ -15,3 +17,5 @@ class OrderListView(generics.ListAPIView):
     '''
     queryset = OrdersModel.objects.all()
     serializer_class = OrderSerializer
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filter_class = OrderFilter
