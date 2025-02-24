@@ -11,4 +11,5 @@ docker exec -it app sh
 ls -l /
 
 Імпортувати дамп у хмарну базу даних: 
-mysql -u username -p -h your-database-host.com -P 3306 database_name < /path/to/dump.sql
+mariadb -u manager -p -h owu.linkpc.net -P 3306 --ssl=0 manager < /orders.sql
+
