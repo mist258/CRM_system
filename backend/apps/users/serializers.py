@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.transaction import atomic
 
 from rest_framework import serializers
 
@@ -13,14 +14,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name',
                   'surname',
-                  'user',
                   'created_at',
                   'updated_at',
                   )
 
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(read_only=True)
+    profile = ProfileSerializer()
 
     class Meta:
         model = UserModel
@@ -28,16 +28,16 @@ class UserSerializer(serializers.ModelSerializer):
                   'email',
                   'is_active',
                   'is_staff',
+                  'is_blocked',
                   'is_superuser',
                   'last_login',
-                  'created_at',
-                  'updated_at',
                   'profile',
                   )
 
         read_only_fields = ('id',
                             'is_active',
                             'is_staff',
+                            'is_blocked',
                             'is_superuser',
                             'last_login',
                             'created_at',
@@ -49,3 +49,12 @@ class UserSerializer(serializers.ModelSerializer):
                 'write_only': True
             },
         }
+
+    @atomic
+    def create(self, validated_data: dict):
+        profile = validated_data.pop('profile')
+        user = UserModel.objects.create_manager(**validated_data)
+        UserProfileModel.objects.create(user=user, **profile)
+        return user
+
+

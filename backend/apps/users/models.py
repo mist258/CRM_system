@@ -7,13 +7,13 @@ from core.models import BaseModel
 from .managers import UserCustomManager
 
 
-class UserCustomModel(AbstractBaseUser, PermissionsMixin, BaseModel): # main
+class UserCustomModel(AbstractBaseUser, PermissionsMixin): # main
     class Meta:
         db_table = 'user'
-        ordering = ('id',)
 
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
+    is_blocked = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
@@ -24,6 +24,7 @@ class UserCustomModel(AbstractBaseUser, PermissionsMixin, BaseModel): # main
 class UserProfileModel(BaseModel): # submain
     class Meta:
         db_table = 'profile'
+        ordering = ('-created_at',)
 
     name = models.CharField(max_length=25, validators=[
         RegexValidator(regex=r'^[A-Za-z]*$')],
