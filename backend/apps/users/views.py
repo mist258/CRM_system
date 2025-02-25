@@ -3,9 +3,9 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.response import Response
 
 from drf_yasg.utils import swagger_auto_schema
-from requests import Response
 
 from .serializers import UserSerializer
 
