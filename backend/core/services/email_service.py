@@ -17,6 +17,7 @@ class EmailService:
         html_content = template.render(context)
         msg = EmailMultiAlternatives(subject=subject, from_email=os.environ.get("EMAIL_HOST_USER"), to=[to])
         msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
     @classmethod
     def activate(cls, user):
