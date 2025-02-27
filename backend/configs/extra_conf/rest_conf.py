@@ -17,4 +17,6 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
 
+    'EXCEPTION_HANDLER': 'core.handlers.error_handler.error_handler',
+
 }
