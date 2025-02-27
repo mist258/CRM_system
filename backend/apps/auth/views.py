@@ -7,10 +7,10 @@ from rest_framework.response import Response
 
 from apps.users.serializers import UserSerializer
 from core.services.email_service import ActivateToken, EmailService
-from core.services.jwt_service import JWTService
+from core.services.jwt_service import JWTService, RecoveryToken
 from drf_yasg.utils import swagger_auto_schema
 
-from .serializers import EmailSerializer
+from .serializers import EmailSerializer, PasswordSerializer
 
 UserModel = get_user_model()
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token',
@@ -47,12 +47,19 @@ class ActivationManagerView(generics.GenericAPIView):
 
 
 class ConfirmationPasswordView(generics.GenericAPIView):
-    pass
+    '''
+        confirm user's password
+    '''
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        #todo
+
 
 
 class RecoveryPasswordRequestView(generics.GenericAPIView):
     '''
-        recover password
+        request to recover password
     '''
     serializer_class = EmailSerializer
 
@@ -63,6 +70,24 @@ class RecoveryPasswordRequestView(generics.GenericAPIView):
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.recovery_password(user)
         return Response({"Details" : "Email was sent to user"},)
+
+class RecoveryPasswordView(generics.GenericAPIView):
+    '''
+        recover password
+    '''
+    serializer_class = PasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        token = kwargs['token']
+        user = JWTService.verify_token(token, RecoveryToken)
+        user.set_password(serializer.data['password'])
+        user.save()
+        return Response({"Details" : "Password has been changed."},
+                        status=status.HTTP_200_OK)
+
 
 
 
