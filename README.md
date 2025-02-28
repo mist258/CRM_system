@@ -30,7 +30,7 @@ III ManagerUnban: unlocks the Manager
 Install project 
 
 ```bash
-  https://github.com/mist258/CRM_system
+  https://github.com/mist258/CRM_system.git
 
   poetry install
 
