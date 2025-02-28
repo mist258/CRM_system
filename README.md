@@ -1,15 +1,46 @@
-CRM_system
-docker compose run --rm app sh
 
-Якщо дамп знаходиться на хості (ззовні контейнера), спочатку потрібно скопіювати його всередину контейнера за допомогою:
-docker cp ~/Downloads/your_dump_file.sql app:/your_dump_file.sql
+# CRM-system for managers API (DRF)
 
-Перевір, чи файл скопіювався:
-docker exec -it app sh
 
-Потім перевір, чи файл є у контейнері:
-ls -l /
 
-Імпортувати дамп у хмарну базу даних: 
-mariadb -u manager -p -h owu.linkpc.net -P 3306 --ssl=0 manager < /orders.sql
+## AUTH
 
+
+I SendActivationEmail: sending an email to the user with a token to activate the account
+
+II ActivationManager: allows the activation of a user's account
+
+III RecoveryPasswordRequest: send a request to reset password
+
+IV RecoveryPassword: resets the password using the token
+## Orders
+
+I OrderList: show all orders
+## USERS
+
+I ListCreateManager: create new user
+
+II ManagerBan: blocks the Manager
+
+III ManagerUnban: unlocks the Manager
+
+
+## Installation
+
+Install project 
+
+```bash
+  https://github.com/mist258/CRM_system
+
+  poetry install
+
+  docker compose up --build 
+
+  docker compose run --rm app sh
+
+ ./manage.py makemigrations
+ ./manage.py migrate
+ ./manage.py createsuperuser
+
+```
+    
