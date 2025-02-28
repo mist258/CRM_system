@@ -10,7 +10,7 @@ from core.services.email_service import ActivateToken, EmailService
 from core.services.jwt_service import JWTService, RecoveryToken
 from drf_yasg.utils import swagger_auto_schema
 
-from .serializers import EmailSerializer, PasswordSerializer, SetPasswordSerializer
+from .serializers import EmailSerializer, SetPasswordSerializer
 
 UserModel = get_user_model()
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token',
@@ -71,7 +71,7 @@ class RecoveryPasswordView(generics.GenericAPIView):
     '''
         recovery password
     '''
-    serializer_class = PasswordSerializer
+    serializer_class = SetPasswordSerializer
 
     def post(self, request, *args, **kwargs):
         data = request.data

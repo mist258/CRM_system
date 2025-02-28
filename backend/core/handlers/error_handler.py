@@ -23,5 +23,5 @@ def _jwt_validation_error_handler(exc:Exception, context: dict) -> Response:
                     status=status.HTTP_403_FORBIDDEN)
 
 def _password_error_handler(exc:Exception, context: dict) -> Response:
-    return Response({"Details" : "Password is incorrect"},
+    return Response({"Details" : "Passwords don't match"},
                     status=status.HTTP_403_FORBIDDEN)
