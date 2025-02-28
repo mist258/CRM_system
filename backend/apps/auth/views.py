@@ -4,8 +4,11 @@ from django.utils.decorators import method_decorator
 from rest_framework import generics, status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 
 from apps.users.serializers import UserSerializer
+from core.permissions.is_manager_permission import IsManagerPermission
+from core.permissions.is_superuser_permission import IsSuperUser
 from core.services.email_service import ActivateToken, EmailService
 from core.services.jwt_service import JWTService, RecoveryToken
 from drf_yasg.utils import swagger_auto_schema
@@ -13,8 +16,7 @@ from drf_yasg.utils import swagger_auto_schema
 from .serializers import EmailSerializer, SetPasswordSerializer
 
 UserModel = get_user_model()
-@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token',
-                                                             responses={200: UserSerializer()}))
+@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token', request_body=Serializer))
 class SendActivationEmailView(GenericAPIView):
     '''
         send email with activation token
@@ -29,13 +31,13 @@ class SendActivationEmailView(GenericAPIView):
                         status=status.HTTP_200_OK)
 
 
-@method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='activate manager',
-                                                              responses={200: UserSerializer()}))
+@method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='activate manager'))
 class ActivationManagerView(generics.GenericAPIView):
     '''
         manager activation
     '''
     serializer_class = SetPasswordSerializer
+    permission_classes = (IsManagerPermission, IsSuperUser,)
 
     def patch(self, request, *args, **kwargs):
         data = request.data
@@ -56,6 +58,8 @@ class RecoveryPasswordRequestView(generics.GenericAPIView):
         request to recover password
     '''
     serializer_class = EmailSerializer
+    permission_classes = (IsManagerPermission,)
+
 
     def post(self, request, *args, **kwargs):
         data = request.data
@@ -72,6 +76,7 @@ class RecoveryPasswordView(generics.GenericAPIView):
         recovery password
     '''
     serializer_class = SetPasswordSerializer
+    permission_classes = (IsManagerPermission,)
 
     def post(self, request, *args, **kwargs):
         data = request.data

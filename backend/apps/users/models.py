@@ -24,7 +24,7 @@ class UserCustomModel(AbstractBaseUser, PermissionsMixin): # main
 class UserProfileModel(BaseModel): # submain
     class Meta:
         db_table = 'profile'
-        ordering = ('-created_at',)
+        ordering = ('created_at',)
 
     name = models.CharField(max_length=25, validators=[
         RegexValidator(regex=r'^[A-Za-z]*$')],

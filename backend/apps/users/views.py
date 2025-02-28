@@ -14,7 +14,7 @@ UserModel = get_user_model()
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create manager',
                                                              responses={200: UserSerializer()}))
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='show all managers',
+@method_decorator(name= 'get',decorator=swagger_auto_schema(operation_id='show all managers',
                                                             responses={200: UserSerializer()}))
 class ListCreateManagerView(ListCreateAPIView):
     '''
