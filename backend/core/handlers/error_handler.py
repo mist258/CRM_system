@@ -5,7 +5,8 @@ from rest_framework.views import exception_handler
 
 def error_handler(exc: Exception, context: dict) -> Response:
     handlers = {
-        "JWTException": _jwt_validation_error_handler
+        "JWTException": _jwt_validation_error_handler,
+        "PasswordException": _password_error_handler,
     }
 
     response = exception_handler(exc, context)
@@ -19,4 +20,8 @@ def error_handler(exc: Exception, context: dict) -> Response:
 
 def _jwt_validation_error_handler(exc:Exception, context: dict) -> Response:
     return Response({"Details" : "Token is invalid or expired"},
+                    status=status.HTTP_403_FORBIDDEN)
+
+def _password_error_handler(exc:Exception, context: dict) -> Response:
+    return Response({"Details" : "Password is incorrect"},
                     status=status.HTTP_403_FORBIDDEN)

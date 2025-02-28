@@ -3,8 +3,6 @@ from django.db.transaction import atomic
 
 from rest_framework import serializers
 
-from core.services.email_service import EmailService
-
 from .models import UserProfileModel
 
 UserModel = get_user_model()
