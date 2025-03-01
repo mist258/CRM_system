@@ -32,7 +32,7 @@ class SendActivationEmailView(GenericAPIView):
 
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='activate manager'))
-class ActivationManagerView(generics.GenericAPIView):
+class ActivationManagerView(GenericAPIView):
     '''
         manager activation
     '''
@@ -53,7 +53,7 @@ class ActivationManagerView(generics.GenericAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='password recovery request'))
-class RecoveryPasswordRequestView(generics.GenericAPIView):
+class RecoveryPasswordRequestView(GenericAPIView):
     '''
         request to recover password
     '''
@@ -71,7 +71,7 @@ class RecoveryPasswordRequestView(generics.GenericAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='recovery password'))
-class RecoveryPasswordView(generics.GenericAPIView):
+class RecoveryPasswordView(GenericAPIView):
     '''
         recovery password
     '''
