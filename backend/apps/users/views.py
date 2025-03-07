@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from drf_yasg.utils import swagger_auto_schema
@@ -70,6 +71,21 @@ class ManagerUnbanView(GenericAPIView):
             user.is_blocked = False
             user.save()
 
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='show me',
+                                                            responses={200: UserSerializer()}))
+class GetMeView(GenericAPIView):
+    '''
+        get my info
+    '''
+    queryset = UserModel.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
 

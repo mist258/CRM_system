@@ -23,3 +23,5 @@ class OrderListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = OrderFilter
 
+class GetMyOrdersView(generics.RetrieveAPIView):
+    pass # todo

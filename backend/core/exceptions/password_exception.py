@@ -1,2 +1,0 @@
-class PasswordException(Exception):
-    pass
