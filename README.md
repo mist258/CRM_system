@@ -24,6 +24,8 @@ II ManagerBan: blocks the Manager
 
 III ManagerUnban: unlocks the Manager
 
+IV  GetMe: get info about me (authenticated manager)
+
 
 ## Installation
 
