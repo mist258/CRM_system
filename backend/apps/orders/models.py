@@ -1,9 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
 
 from core.models import BaseModel
 
 from .choices.application_choices import CoursesChoices, FormatCourseChoices, StatusChoices, TypeCourseChoices
+
+UserModel = get_user_model()
+
+# class CommentsModel(BaseModel):
+#     class Meta:
+#         db_table = 'comments'
+#         ordering = ('id',)
+#
+#     text = models.TextField(max_length=100)
 
 
 class OrdersModel(models.Model):
@@ -37,6 +47,7 @@ class OrdersModel(models.Model):
     alreadyPaid = models.DecimalField(max_digits=5, decimal_places=0,
                                       blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    manager = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, related_name='orders')
+    #comments = models.OneToOneField(CommentsModel, on_delete=models.SET_NULL, null=True, related_name='order_comment')
     group = ...
-    manager = ...
 

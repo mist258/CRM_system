@@ -2,6 +2,12 @@ from rest_framework import serializers
 
 from .models import OrdersModel
 
+# class CommentsModelSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CommentsModel
+#         fields = ('id',
+#                   'text')
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
