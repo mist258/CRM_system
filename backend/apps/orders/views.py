@@ -26,6 +26,8 @@ class OrderListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = OrderFilter
 
+
+@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='add manager to chosen order'))
 class AssignedOrderToManager(generics.GenericAPIView): # in work
     '''
         Assign order to manager
