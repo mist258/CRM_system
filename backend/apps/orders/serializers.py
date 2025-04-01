@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from apps.users.serializers import UserSerializer
+
 from .models import OrdersModel
 
 # class CommentsModelSerializer(serializers.ModelSerializer):
@@ -9,7 +11,9 @@ from .models import OrdersModel
 #                   'text')
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):  # in work
+    manager = UserSerializer(read_only=True)
+
     class Meta:
         model = OrdersModel
         fields = ('id',
@@ -23,6 +27,7 @@ class OrderSerializer(serializers.ModelSerializer):
                   'course_format',
                   'status',
                   'sum',
+                  'manager',
                   'alreadyPaid',
                   'created_at',                  )
         read_only_fields = ('id',
