@@ -4,11 +4,9 @@ from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.utils.mediatypes import order_by_precedence
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
-from setuptools.package_index import user_agent
 
 from .filters import OrderFilter
 from .models import OrdersModel
@@ -40,8 +38,7 @@ class AssignedOrderToManager(generics.GenericAPIView): # in work
         user = self.request.user
 
         if order.manager is not None or order.status == "In work":
-            return Response("You cannot select this order, "
-                            "it is assigned to another manager ")
+            ...
 
 
 

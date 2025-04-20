@@ -16,7 +16,8 @@ UserModel = get_user_model()
 #     text = models.TextField(max_length=100)
 
 
-class OrdersModel(models.Model):
+class OrdersModel(models.Model): # submain
+
     class Meta:
         db_table = 'orders'
         ordering = ('id',)
