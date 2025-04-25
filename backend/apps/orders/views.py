@@ -1,6 +1,6 @@
 from django.utils.decorators import method_decorator
 
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
 from .models import OrdersModel
-from .serializers import OrderSerializer
+from .serializers import AssignOrderToManagerSerializer, OrderSerializer
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all orders'))
@@ -32,13 +32,22 @@ class AssignedOrderToManager(generics.GenericAPIView): # in work
     '''
     permission_classes = (IsAuthenticated,)
     queryset = OrdersModel.objects.all()
+    serializer_class = AssignOrderToManagerSerializer
 
     def post(self, request, *args, **kwargs):
         order = self.get_object()
         user = self.request.user
 
-        if order.manager is not None or order.status == "In work":
-            ...
+        if order.manager is not None or order.status != "New":
+            return Response({"detail": "You can't assign order to manager"})
+
+        order.manager = user
+        order.status = "In work"
+        order.save()
+
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 
