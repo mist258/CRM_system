@@ -15,7 +15,7 @@ UserModel = get_user_model()
 #                   'text')
 
 
-class OrderSerializer(serializers.ModelSerializer):  # in work
+class OrderSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
 
     class Meta:
