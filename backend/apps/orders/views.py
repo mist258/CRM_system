@@ -4,7 +4,6 @@ from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.utils.representation import serializer_repr
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
@@ -51,15 +50,20 @@ class AssignedOrderToManager(generics.GenericAPIView): # in work
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-class GetMyOrdersView(generics.RetrieveAPIView):
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order'))
+class GetMyOrdersView(generics.ListAPIView):
     '''
         show all orders of authenticated manager
     '''
     permission_classes = (IsAuthenticated,)
-    pass # todo
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return OrdersModel.objects.filter(manager=user)
 
 
+#@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='manager can create comments to order'))
 class CommentOrderCreateView(generics.GenericAPIView):
     pass # todo perform_create / update
 
