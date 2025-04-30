@@ -38,18 +38,15 @@ class AssignedOrderToManager(generics.GenericAPIView): # in work
         order = self.get_object()
         user = self.request.user
 
-        if order.manager is not None or order.status != "New":
-            return Response({"detail": "You can't assign order to manager"},
+        if order.manager is not None or (order.status not in ["New", None]):
+            return Response({"detail": "Another manager have been "
+                                       "assigned to this order"},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        if order.status == None :
-
-            order.manager = user
-            order.status = "In work"
-            order.save()
-
+        order.manager = user
+        order.status = "In work"
+        order.save()
         serializer = OrderSerializer(order)
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order'))

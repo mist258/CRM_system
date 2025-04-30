@@ -4,19 +4,23 @@ from rest_framework import serializers
 
 from apps.users.serializers import UserSerializer
 
-from .models import OrdersModel
+from .models import CommentsModel, GroupModel, OrdersModel
 
 UserModel = get_user_model()
 
-# class CommentsModelSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CommentsModel
-#         fields = ('id',
-#                   'text')
+
+class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentsModel
+        fields = ('id',
+                  'text',
+                  'order',
+                  )
 
 
 class OrderSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
+    comments = CommentsSerializer(many=True, read_only=True)
 
     class Meta:
         model = OrdersModel
@@ -32,11 +36,24 @@ class OrderSerializer(serializers.ModelSerializer):
                   'status',
                   'sum',
                   'manager',
+                  'comments',
+                  'group',
                   'alreadyPaid',
-                  'created_at',                  )
+                  'created_at',
+                  )
         read_only_fields = ('id',
                             'created_at',
                             )
+
+class GroupSerializer(serializers.ModelSerializer):
+    order_group = OrderSerializer(read_only=True)
+
+    class Meta:
+        model = GroupModel
+        fields = ('id',
+                  'name',
+                  'order_group',)
+
 
 class AssignOrderToManagerSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True, read_only=True)
@@ -47,4 +64,5 @@ class AssignOrderToManagerSerializer(serializers.ModelSerializer):
                   'email',
                   'name',
                   'surname',
-                  'orders')
+                  'orders',
+                  )
