@@ -16,6 +16,10 @@ IV RecoveryPassword: resets the password using the token
 ## Orders
 
 I OrderList: show all orders
+
+II AssignedOrderToManager: manager can take the order to work 
+
+III GetMyOrdersView: manager can review their own orders
 ## USERS
 
 I ListCreateManager: create new user
