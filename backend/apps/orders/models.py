@@ -8,13 +8,13 @@ from .choices.application_choices import CoursesChoices, FormatCourseChoices, St
 
 UserModel = get_user_model()
 
-# class CommentsModel(BaseModel):
-#     class Meta:
-#         db_table = 'comments'
-#         ordering = ('id',)
-#
-#     text = models.TextField(max_length=100)
 
+class GroupModel(models.Model):
+    class Meta:
+        db_table = 'group_order'
+        ordering = ('id',)
+
+    name = models.CharField(max_length=100, unique=True)
 
 class OrdersModel(models.Model): # submain
 
@@ -49,6 +49,13 @@ class OrdersModel(models.Model): # submain
                                       blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     manager = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, related_name='orders')
-    #comments = models.OneToOneField(CommentsModel, on_delete=models.SET_NULL, null=True, related_name='order_comment')
-    group = ...
+    group = models.OneToOneField(GroupModel, on_delete=models.SET_NULL, null=True, related_name='order_group')
 
+
+class CommentsModel(BaseModel):
+    class Meta:
+        db_table = 'comments'
+        ordering = ('id',)
+
+    text = models.TextField(max_length=100)
+    order = models.ForeignKey(OrdersModel, on_delete=models.SET_NULL, null=True, related_name='comments')

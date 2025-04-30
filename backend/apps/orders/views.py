@@ -42,9 +42,11 @@ class AssignedOrderToManager(generics.GenericAPIView): # in work
             return Response({"detail": "You can't assign order to manager"},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        order.manager = user
-        order.status = "In work"
-        order.save()
+        if order.status == None :
+
+            order.manager = user
+            order.status = "In work"
+            order.save()
 
         serializer = OrderSerializer(order)
 
@@ -67,3 +69,7 @@ class GetMyOrdersView(generics.ListAPIView):
 class CommentOrderCreateView(generics.GenericAPIView):
     pass # todo perform_create / update
 
+
+class UpdateOrderView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    pass # todo 
