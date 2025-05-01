@@ -10,7 +10,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
 from .models import OrdersModel
-from .serializers import AssignOrderToManagerSerializer, OrderSerializer
+from .serializers import AssignOrderToManagerSerializer, CommentsSerializer, OrderSerializer
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all orders'))
@@ -26,7 +26,7 @@ class OrderListView(generics.ListAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='add manager to chosen order'))
-class AssignedOrderToManager(generics.GenericAPIView): # in work
+class AssignedOrderToManager(generics.GenericAPIView):
     '''
         Assign order to manager
     '''
@@ -63,8 +63,15 @@ class GetMyOrdersView(generics.ListAPIView):
 
 
 #@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='manager can create comments to order'))
-class CommentOrderCreateView(generics.GenericAPIView):
-    pass # todo perform_create / update
+class CommentOrderCreateView(generics.GenericAPIView): # in work
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CommentsSerializer
+
+    def post(self, request, *args, **kwargs):
+        order = self.get_object()
+        user = self.request.user
+        data = request.data
+
 
 
 class UpdateOrderView(generics.GenericAPIView):

@@ -9,13 +9,16 @@ from .models import CommentsModel, GroupModel, OrdersModel
 UserModel = get_user_model()
 
 
-class CommentsSerializer(serializers.ModelSerializer):
+class CommentsSerializer(serializers.ModelSerializer): # in work
     class Meta:
         model = CommentsModel
         fields = ('id',
                   'text',
                   'order',
                   )
+        read_only_fields = ('id',
+                            'created_at',
+                            )
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -44,6 +47,12 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',
                             'created_at',
                             )
+
+        extra_kwargs = {
+            'group': {
+                'required': True
+            },
+        }
 
 class GroupSerializer(serializers.ModelSerializer):
     order_group = OrderSerializer(read_only=True)
