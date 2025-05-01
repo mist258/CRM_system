@@ -39,13 +39,13 @@ class AssignedOrderToManager(generics.GenericAPIView):
         user = self.request.user
 
         if order.manager is not None or (order.status not in ["New", None]):
-            return Response({"detail": "Another manager have been "
+            return Response({"detail": "Another manager has been "
                                        "assigned to this order"},
                             status=status.HTTP_400_BAD_REQUEST)
 
         order.manager = user
         order.status = "In work"
-        order.save()
+        order.save() 
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -65,13 +65,28 @@ class GetMyOrdersView(generics.ListAPIView):
 #@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='manager can create comments to order'))
 class CommentOrderCreateView(generics.GenericAPIView): # in work
     permission_classes = (IsAuthenticated,)
+    queryset = OrdersModel.objects.all()
     serializer_class = CommentsSerializer
 
     def post(self, request, *args, **kwargs):
         order = self.get_object()
         user = self.request.user
-        data = request.data
+        data =  request.data
 
+        if order.manager is not None and order.manager != user:
+            return Response({"detail": "Another manager has been "
+                             "assigned to this order"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if order.manager is None:
+            order.manager = user
+            order.status = "In work"
+            order.save()
+
+        serializer = CommentsSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(order=order)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class UpdateOrderView(generics.GenericAPIView):

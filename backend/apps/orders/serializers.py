@@ -18,6 +18,7 @@ class CommentsSerializer(serializers.ModelSerializer): # in work
                   )
         read_only_fields = ('id',
                             'created_at',
+                            'order',
                             )
 
 
