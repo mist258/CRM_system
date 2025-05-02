@@ -9,7 +9,7 @@ from .models import CommentsModel, GroupModel, OrdersModel
 UserModel = get_user_model()
 
 
-class CommentsSerializer(serializers.ModelSerializer): # in work
+class CommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommentsModel

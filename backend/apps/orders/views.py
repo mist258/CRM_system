@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
@@ -95,5 +96,24 @@ class UpdateOrderView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     pass # todo
 
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get general orders statistics'))
 class GetGeneralOrdersStatisticsView(generics.GenericAPIView):
     permission_classes = (IsSuperUser,)
+
+    def get(self, request, *args, **kwargs):
+        total_orders = OrdersModel.objects.count()
+        status_count = OrdersModel.objects.values('status').annotate(count=Count('status'))
+
+        by_status = {}
+        for item in status_count:
+            status_name = item['count'] if item['status'] is not None else 'Unknown'
+            by_status[status_name] = item['count']
+
+        return Response({
+            'total_orders': total_orders,
+            'by_status': by_status},
+            status.HTTP_200_OK)
+
+
+
+
