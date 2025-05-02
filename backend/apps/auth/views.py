@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
-from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
@@ -17,7 +17,7 @@ from .serializers import EmailSerializer, SetPasswordSerializer
 
 UserModel = get_user_model()
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token', request_body=Serializer))
-class SendActivationEmailView(GenericAPIView):
+class SendActivationEmailView(generics.GenericAPIView):
     '''
         send email with activation token
     '''
@@ -28,11 +28,11 @@ class SendActivationEmailView(GenericAPIView):
         user = self.get_object()
         EmailService.activate(user)
         return Response({"Details" : "Email was sent to user"},
-                        status=status.HTTP_200_OK)
+                        status.HTTP_200_OK)
 
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='activate manager'))
-class ActivationManagerView(GenericAPIView):
+class ActivationManagerView(generics.GenericAPIView):
     '''
         manager activation
     '''
@@ -49,11 +49,11 @@ class ActivationManagerView(GenericAPIView):
         user.set_password(serializer.data['password'])
         user.save()
         return Response( {"Details" : "Password has been changed."},
-                         status=status.HTTP_200_OK)
+                         status.HTTP_200_OK)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='password recovery request'))
-class RecoveryPasswordRequestView(GenericAPIView):
+class RecoveryPasswordRequestView(generics.GenericAPIView):
     '''
         request to recover password
     '''
@@ -67,11 +67,12 @@ class RecoveryPasswordRequestView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(UserModel, **serializer.data)
         EmailService.recovery_password(user)
-        return Response({"Details" : "Email was sent to user"},)
+        return Response({"Details" : "Email was sent to user"},
+                        status.HTTP_200_OK)
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='recovery password'))
-class RecoveryPasswordView(GenericAPIView):
+class RecoveryPasswordView(generics.GenericAPIView):
     '''
         recovery password
     '''
@@ -87,4 +88,4 @@ class RecoveryPasswordView(GenericAPIView):
         user.set_password(serializer.data['password'])
         user.save()
         return Response({"Details" : "Password has been changed."},
-                        status=status.HTTP_200_OK)
+                        status.HTTP_200_OK)

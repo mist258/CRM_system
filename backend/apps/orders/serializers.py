@@ -10,6 +10,7 @@ UserModel = get_user_model()
 
 
 class CommentsSerializer(serializers.ModelSerializer): # in work
+
     class Meta:
         model = CommentsModel
         fields = ('id',
@@ -24,7 +25,7 @@ class CommentsSerializer(serializers.ModelSerializer): # in work
 
 class OrderSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
-    comments = CommentsSerializer(many=True, read_only=True)
+    comments = CommentsSerializer(read_only=True, many=True)
 
     class Meta:
         model = OrdersModel
@@ -54,6 +55,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 'required': True
             },
         }
+
 
 class GroupSerializer(serializers.ModelSerializer):
     order_group = OrderSerializer(read_only=True)

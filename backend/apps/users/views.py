@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils.decorators import method_decorator
 
-from rest_framework import status
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -17,7 +16,7 @@ UserModel = get_user_model()
                                                              responses={200: UserSerializer()}))
 @method_decorator(name= 'get',decorator=swagger_auto_schema(operation_id='show all managers',
                                                             responses={200: UserSerializer()}))
-class ListCreateManagerView(ListCreateAPIView):
+class ListCreateManagerView(generics.ListCreateAPIView):
     '''
     get:
         create a new manager
@@ -30,7 +29,7 @@ class ListCreateManagerView(ListCreateAPIView):
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id = 'ban manager by id',
                                                             responses={200: UserSerializer()}))
-class ManagerBanView(GenericAPIView):
+class ManagerBanView(generics.GenericAPIView):
     '''
          ban a manager
          (allowed superuser only)
@@ -53,7 +52,7 @@ class ManagerBanView(GenericAPIView):
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='unban manager by id',
                                                             responses={200: UserSerializer()}))
-class ManagerUnbanView(GenericAPIView):
+class ManagerUnbanView(generics.GenericAPIView):
     '''
          unban a manager
          (allowed superuser only)
@@ -76,7 +75,7 @@ class ManagerUnbanView(GenericAPIView):
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='show me',
                                                             responses={200: UserSerializer()}))
-class GetMeView(GenericAPIView):
+class GetMeView(generics.GenericAPIView):
     '''
         get my info
     '''
