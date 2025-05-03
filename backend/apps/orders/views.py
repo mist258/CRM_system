@@ -19,6 +19,7 @@ from .serializers import AssignOrderToManagerSerializer, CommentsSerializer, Ord
 class OrderListView(generics.ListAPIView):
     '''
         Show all orders
+        (for authenticated users)
     '''
     queryset = OrdersModel.objects.all()
     serializer_class = OrderSerializer
@@ -31,6 +32,7 @@ class OrderListView(generics.ListAPIView):
 class AssignedOrderToManager(generics.GenericAPIView):
     '''
         Assign order to manager
+        (for authenticated manager)
     '''
     permission_classes = (IsAuthenticated,)
     queryset = OrdersModel.objects.all()
@@ -56,6 +58,7 @@ class AssignedOrderToManager(generics.GenericAPIView):
 class GetMyOrdersView(generics.ListAPIView):
     '''
         show all orders of authenticated manager
+        (for authenticated manager)
     '''
     permission_classes = (IsAuthenticated,)
     serializer_class = OrderSerializer
@@ -66,7 +69,11 @@ class GetMyOrdersView(generics.ListAPIView):
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='manager can create comments to order'))
-class CommentOrderCreateView(generics.GenericAPIView): # in work
+class CommentOrderCreateView(generics.GenericAPIView):
+    '''
+        manager can create comments to order
+        (for authenticated manager)
+    '''
     permission_classes = (IsAuthenticated,)
     queryset = OrdersModel.objects.all()
     serializer_class = CommentsSerializer
@@ -93,11 +100,19 @@ class CommentOrderCreateView(generics.GenericAPIView): # in work
 
 
 class UpdateOrderView(generics.GenericAPIView):
+    '''
+        manager can update order
+        (for authenticated manager)
+    '''
     permission_classes = (IsAuthenticated,)
     pass # todo
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get general orders statistics'))
-class GetGeneralOrdersStatisticsView(generics.GenericAPIView):
+class GeneralOrdersStatisticsView(generics.GenericAPIView):
+    '''
+     show general orders statistics
+     (for admin)
+    '''
     permission_classes = (IsSuperUser,)
 
     def get(self, request, *args, **kwargs):
@@ -115,12 +130,29 @@ class GetGeneralOrdersStatisticsView(generics.GenericAPIView):
 
             null_count = total_orders - total_known
             if null_count > 0:
-                by_status['Unknown'] = null_count
+                by_status['Null'] = null_count
 
         return Response({
             'total_orders': total_orders,
             'by_status': by_status},
             status.HTTP_200_OK)
+
+class  OrderStatisticsByManagerView(generics.GenericAPIView):
+    '''
+     show general orders statistics by each manager
+     (for admin)
+    '''
+    permission_classes = (IsSuperUser,)
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+
+
+
+
+
+
 
 
 
