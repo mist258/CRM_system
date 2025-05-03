@@ -2,7 +2,7 @@ from django.db.models import Count
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -29,8 +29,9 @@ class OrderListView(generics.ListAPIView):
     queryset = OrdersModel.objects.all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = OrderFilter
+    search_fields = ['email', 'phone', 'surname']
 
 
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='add manager to chosen order'))
