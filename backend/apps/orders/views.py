@@ -102,12 +102,20 @@ class GetGeneralOrdersStatisticsView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         total_orders = OrdersModel.objects.count()
-        status_count = OrdersModel.objects.values('status').annotate(count=Count('status'))
+        status_count = (OrdersModel.objects.exclude(status__isnull=True)
+                        .values('status')
+                        .annotate(count=Count('status')))
 
         by_status = {}
+        total_known = 0
         for item in status_count:
-            status_name = item['count'] if item['status'] is not None else 'Unknown'
+            status_name = item['status']
             by_status[status_name] = item['count']
+            total_known += item['count']
+
+            null_count = total_orders - total_known
+            if null_count > 0:
+                by_status['Unknown'] = null_count
 
         return Response({
             'total_orders': total_orders,
