@@ -12,7 +12,12 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
 from .models import OrdersModel
-from .serializers import AssignOrderToManagerSerializer, CommentsSerializer, OrderSerializer
+from .serializers import (
+    AssignOrderToManagerSerializer,
+    CommentsSerializer,
+    ManagerStatisticsSerializer,
+    OrderSerializer,
+)
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all orders'))
@@ -107,6 +112,7 @@ class UpdateOrderView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     pass # todo
 
+
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get general orders statistics'))
 class GeneralOrdersStatisticsView(generics.GenericAPIView):
     '''
@@ -137,21 +143,16 @@ class GeneralOrdersStatisticsView(generics.GenericAPIView):
             'by_status': by_status},
             status.HTTP_200_OK)
 
-class  OrderStatisticsByManagerView(generics.GenericAPIView):
+
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager orders statistics'))
+class  OrderStatisticsByManagerView(generics.ListAPIView): # in work
     '''
      show general orders statistics by each manager
      (for admin)
     '''
+    queryset = OrdersModel.objects.all()
+    serializer_class = ManagerStatisticsSerializer
     permission_classes = (IsSuperUser,)
-
-    def get(self, request, *args, **kwargs):
-        pass
-
-
-
-
-
-
 
 
 

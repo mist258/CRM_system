@@ -3,7 +3,7 @@ from django_filters import rest_framework as filters
 from .models import OrdersModel
 
 
-class OrderFilter(filters.FilterSet):
+class OrderFilter(filters.FilterSet): #?????? todo
     class Meta:
         model = OrdersModel
         fields = ['id', 'name', 'surname',

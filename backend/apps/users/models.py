@@ -7,7 +7,7 @@ from core.models import BaseModel
 from .managers import UserCustomManager
 
 
-class UserCustomModel(AbstractBaseUser, PermissionsMixin): # main
+class UserCustomModel(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = 'user'
 
@@ -21,7 +21,7 @@ class UserCustomModel(AbstractBaseUser, PermissionsMixin): # main
     objects = UserCustomManager()
 
 
-class UserProfileModel(BaseModel): # submain
+class UserProfileModel(BaseModel):
     class Meta:
         db_table = 'profile'
         ordering = ('created_at',)

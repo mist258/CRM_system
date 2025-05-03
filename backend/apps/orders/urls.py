@@ -6,6 +6,7 @@ from .views import (
     GeneralOrdersStatisticsView,
     GetMyOrdersView,
     OrderListView,
+    OrderStatisticsByManagerView,
 )
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
     path('/<int:pk>/assign_order', AssignedOrderToManager.as_view(), name='assign_order'),
     path('/<int:pk>/comments', CommentOrderCreateView.as_view(), name='comment'),
     path('/general_statistic', GeneralOrdersStatisticsView.as_view(), name='general_statistic'),
+    path('/manager_statistic', OrderStatisticsByManagerView.as_view(), name='manager_statistic'),
 
 ]
