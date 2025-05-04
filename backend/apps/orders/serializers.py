@@ -101,16 +101,10 @@ class ManagerStatisticsSerializer(serializers.ModelSerializer):
         status_count = OrdersModel.objects.values('status').annotate(total=Count('status'))
 
         statistics = {}
-        total_count = 0
 
         for item in status_count:
             status_name = item['status']
             statistics[status_name] = item['total']
-            total_count += item['total']
-
-        null_count = orders.count() - total_count
-        if null_count > 0:
-            statistics['Null'] = null_count
 
         return {
             'total_orders': orders.count(),
