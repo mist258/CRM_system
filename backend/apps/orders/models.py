@@ -16,7 +16,7 @@ class GroupModel(models.Model):
 
     name = models.CharField(max_length=100, unique=True)
 
-class OrdersModel(models.Model): # submain
+class OrdersModel(models.Model):
 
     class Meta:
         db_table = 'orders'

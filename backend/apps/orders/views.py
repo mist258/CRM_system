@@ -11,10 +11,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
-from .models import OrdersModel
+from .models import GroupModel, OrdersModel
 from .serializers import (
     AssignOrderToManagerSerializer,
     CommentsSerializer,
+    GroupSerializer,
     ManagerStatisticsSerializer,
     OrderSerializer,
 )
@@ -104,6 +105,17 @@ class CommentOrderCreateView(generics.GenericAPIView):
         comment_serializer = OrderSerializer(order)
         return Response(comment_serializer.data, status.HTTP_201_CREATED)
 
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all groups'))
+@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create group'))
+class CreateListGroupView(generics.ListCreateAPIView):
+    '''
+        create new group or list all groups
+        (for authenticated manager)
+    '''
+    permission_classes = (IsAuthenticated,)
+    serializer_class = GroupSerializer
+    queryset = GroupModel.objects.all()
+
 
 class UpdateOrderView(generics.GenericAPIView):
     '''
@@ -154,8 +166,3 @@ class  OrderStatisticsByManagerView(generics.ListAPIView): # in work
     queryset = OrdersModel.objects.all()
     serializer_class = ManagerStatisticsSerializer
     permission_classes = (IsSuperUser,)
-
-
-
-
-
