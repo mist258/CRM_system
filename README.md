@@ -29,7 +29,9 @@ VI UpdateOrder: manager can update order by id
 
 VII GeneralOrdersStatistics: admin can view general statistics on orders
 
-VIII  OrderStatisticsByManager: admin can view general statistics on orders by each manager
+VIII OrderStatisticsByManager: admin can view general statistics on orders by each manager
+
+IX RetrieveGroup: get order by id
 
 ## USERS
 
