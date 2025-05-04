@@ -3,7 +3,7 @@ from django.db.models import Count
 
 from rest_framework import serializers
 
-from apps.users.serializers import UserSerializer
+from apps.users.serializers import ProfileSerializer, UserSerializer
 
 from .models import CommentsModel, GroupModel, OrdersModel
 
@@ -18,6 +18,7 @@ class CommentsSerializer(serializers.ModelSerializer):
                   'text',
                   'order',
                   )
+
         read_only_fields = ('id',
                             'created_at',
                             'order',
@@ -28,7 +29,9 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupModel
         fields = ('id',
-                  'name',)
+                  'name',
+                  )
+
 
 class OrderSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
@@ -81,22 +84,21 @@ class AssignOrderToManagerSerializer(serializers.ModelSerializer):
                   )
 
 
-class ManagerStatisticsSerializer(serializers.ModelSerializer): # in work
+class ManagerStatisticsSerializer(serializers.ModelSerializer):
     order_statistics = serializers.SerializerMethodField()
+    profile = ProfileSerializer(read_only=True)
 
     class Meta:
         model = UserModel
         fields = ('id',
                   'email',
-                  'name',
-                  'surname',
-                  'orders',
+                  'profile',
                   'order_statistics',
                   )
 
     def get_order_statistics(self, obj):
         orders = OrdersModel.objects.filter(manager=obj)
-        status_count = OrdersModel.objects.values('status').annotate(total=Count('orders'))
+        status_count = OrdersModel.objects.values('status').annotate(total=Count('status'))
 
         statistics = {}
         total_count = 0
