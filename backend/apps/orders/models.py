@@ -49,7 +49,7 @@ class OrdersModel(models.Model):
                                       blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     manager = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, related_name='orders')
-    group = models.OneToOneField(GroupModel, on_delete=models.SET_NULL, null=True, related_name='order_group')
+    group = models.ForeignKey(GroupModel, on_delete=models.SET_NULL, null=True, related_name='order_group')
 
 
 class CommentsModel(BaseModel):

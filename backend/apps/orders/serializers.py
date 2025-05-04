@@ -23,10 +23,17 @@ class CommentsSerializer(serializers.ModelSerializer):
                             'order',
                             )
 
+class GroupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GroupModel
+        fields = ('id',
+                  'name',)
 
 class OrderSerializer(serializers.ModelSerializer):
     manager = UserSerializer(read_only=True)
     comments = CommentsSerializer(read_only=True, many=True)
+    group = GroupSerializer(read_only=True)
 
     class Meta:
         model = OrdersModel
@@ -49,6 +56,9 @@ class OrderSerializer(serializers.ModelSerializer):
                   )
         read_only_fields = ('id',
                             'created_at',
+                            'manager',
+                            'group',
+                            'comments',
                             )
 
         extra_kwargs = {
@@ -56,16 +66,6 @@ class OrderSerializer(serializers.ModelSerializer):
                 'required': True
             },
         }
-
-
-class GroupSerializer(serializers.ModelSerializer):
-    order_group = OrderSerializer(read_only=True)
-
-    class Meta:
-        model = GroupModel
-        fields = ('id',
-                  'name',
-                  'order_group',)
 
 
 class AssignOrderToManagerSerializer(serializers.ModelSerializer):
@@ -114,6 +114,3 @@ class ManagerStatisticsSerializer(serializers.ModelSerializer): # in work
             'total_orders': orders.count(),
             'by_status': statistics
         }
-
-
-
