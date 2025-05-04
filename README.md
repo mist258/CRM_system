@@ -19,7 +19,18 @@ I OrderList: show all orders
 
 II AssignedOrderToManager: manager can take the order to work 
 
-III GetMyOrdersView: manager can review their own orders
+III GetMyOrders: manager can review their own orders
+
+IV CommentOrderCreate: manager can leave a comment under order
+
+V CreateListGroup: create grooup or list all groups
+
+VI UpdateOrder: manager can update order by id
+
+VII GeneralOrdersStatistics: admin can view general statistics on orders
+
+VIII  OrderStatisticsByManager: admin can view general statistics on orders by each manager
+
 ## USERS
 
 I ListCreateManager: create new user
