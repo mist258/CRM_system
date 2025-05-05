@@ -7,7 +7,6 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.serializers import Serializer
 
 from core.permissions.is_order_owner import IsOrderOwner
 from core.permissions.is_superuser_permission import IsSuperUser

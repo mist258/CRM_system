@@ -12,7 +12,7 @@ class EmailSerializer(serializers.Serializer):
 
 
 class SetPasswordSerializer(serializers.Serializer):
-    password = serializers.CharField() # maybe write_only=True
+    password = serializers.CharField()
 
     def validate(self, attrs):
 
