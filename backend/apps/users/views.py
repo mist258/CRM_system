@@ -5,6 +5,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from core.permissions.is_superuser_permission import IsSuperUser
 from drf_yasg.utils import swagger_auto_schema
 
 from .serializers import UserSerializer
@@ -24,8 +25,9 @@ class ListCreateManagerView(generics.ListCreateAPIView):
         list all managers
         (allowed superuser only)
     '''
-    queryset = UserModel.objects.all()
+    queryset = UserModel.objects.select_related('profile').all()
     serializer_class = UserSerializer
+    permission_classes = (IsSuperUser,)
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id = 'ban manager by id',
                                                             responses={200: UserSerializer()}))
@@ -35,9 +37,10 @@ class ManagerBanView(generics.GenericAPIView):
          (allowed superuser only)
     '''
     serializer_class = UserSerializer
+    permission_classes = (IsSuperUser,)
 
     def get_queryset(self):
-        return UserModel.objects.exclude(pk = self.request.user.id)
+        return UserModel.objects.select_related('profile').exclude(pk = self.request.user.id)
 
     def patch(self, *args, **kwargs):
         user = self.get_object()
@@ -58,9 +61,10 @@ class ManagerUnbanView(generics.GenericAPIView):
          (allowed superuser only)
     '''
     serializer_class = UserSerializer
+    permission_classes = (IsSuperUser,)
 
     def get_queryset(self):
-        return UserModel.objects.exclude(pk = self.request.user.id)
+        return UserModel.objects.select_related('profile').exclude(pk = self.request.user.id)
 
     def patch(self, *args, **kwargs):
         user = self.get_object()

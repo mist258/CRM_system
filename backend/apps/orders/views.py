@@ -7,7 +7,9 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.serializers import Serializer
 
+from core.permissions.is_order_owner import IsOrderOwner
 from core.permissions.is_superuser_permission import IsSuperUser
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
@@ -31,7 +33,7 @@ class OrderListView(generics.ListAPIView):
         Show all orders
         (for authenticated users)
     '''
-    queryset = OrdersModel.objects.all()
+    queryset = OrdersModel.objects.select_related('manager', 'group').prefetch_related('comments').all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
@@ -65,7 +67,8 @@ class AssignedOrderToManager(generics.GenericAPIView):
         return Response(serializer.data, status.HTTP_201_CREATED)
 
 
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order'))
+@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order',
+                                                            responses={200: OrderSerializer()}))
 class GetMyOrdersView(generics.ListAPIView):
     '''
         show all orders of authenticated manager
@@ -86,7 +89,7 @@ class CommentOrderCreateView(generics.GenericAPIView):
         (for authenticated manager)
     '''
     permission_classes = (IsAuthenticated,)
-    queryset = OrdersModel.objects.all()
+    queryset = OrdersModel.objects.prefetch_related('comments').all()
     serializer_class = CommentsSerializer
 
     def post(self, request, *args, **kwargs):
@@ -148,11 +151,13 @@ class UpdateOrderView(generics.GenericAPIView):
         manager can update order
         (for authenticated manager)
     '''
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOrderOwner,)
     serializer_class = OrderSerializer
 
     def put(self, request, *args, **kwargs):
         order = get_object_or_404(OrdersModel, pk=self.kwargs['order_pk'])
+        self.check_object_permissions(request, order)
+
         group = get_object_or_404(GroupModel, pk=self.kwargs['group_pk'])
 
         order.group = group
@@ -208,4 +213,4 @@ class  OrderStatisticsByManagerView(generics.ListAPIView):
     permission_classes = (IsSuperUser,)
 
     def get_queryset(self):
-        return UserModel.objects.filter(orders__isnull=False).distinct()
+        return UserModel.objects.select_related('profile').filter(orders__isnull=False).distinct()

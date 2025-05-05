@@ -73,6 +73,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class AssignOrderToManagerSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True, read_only=True)
+    name = serializers.CharField(source='profile.name', read_only=True)
+    surname = serializers.CharField(source='profile.surname', read_only=True)
 
     class Meta:
         model = UserModel
@@ -98,7 +100,8 @@ class ManagerStatisticsSerializer(serializers.ModelSerializer):
 
     def get_order_statistics(self, obj):
         orders = OrdersModel.objects.filter(manager=obj)
-        status_count = OrdersModel.objects.values('status').annotate(total=Count('status'))
+
+        status_count = orders.values('status').annotate(total=Count('status'))
 
         statistics = {}
 

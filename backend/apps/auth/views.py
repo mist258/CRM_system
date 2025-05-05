@@ -16,6 +16,8 @@ from drf_yasg.utils import swagger_auto_schema
 from .serializers import EmailSerializer, SetPasswordSerializer
 
 UserModel = get_user_model()
+
+
 @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='send activation token', request_body=Serializer))
 class SendActivationEmailView(generics.GenericAPIView):
     '''
