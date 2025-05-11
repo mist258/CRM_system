@@ -13,25 +13,18 @@ II ActivationManager: allows the activation of a user's account
 III RecoveryPasswordRequest: send a request to reset password
 
 IV RecoveryPassword: resets the password using the token
-## Orders
+
+## ORDERS
 
 I OrderList: show all orders
 
-II AssignedOrderToManager: manager can take the order to work 
+II GetMyOrders: manager can review their own orders
 
-III GetMyOrders: manager can review their own orders
+III UpdateOrder: manager can update order by id
 
-IV CommentOrderCreate: manager can leave a comment under order
+IV GeneralOrdersStatistics: admin can view general statistics on orders
 
-V CreateListGroup: create grooup or list all groups
-
-VI RetrieveGroup: get order by id
-
-VII UpdateOrder: manager can update order by id
-
-VIII GeneralOrdersStatistics: admin can view general statistics on orders
-
-IX OrderStatisticsByManager: admin can view general statistics on orders by each manager
+V OrderStatisticsByManager: admin can view general statistics on orders by each manager
 
 
 ## USERS
@@ -43,6 +36,18 @@ II ManagerBan: blocks the Manager
 III ManagerUnban: unlocks the Manager
 
 IV  GetMe: get info about me (authenticated )
+
+
+## GROUPS
+
+I CreateListGroup: create grooup or list all groups
+
+II RetrieveGroup: get order by id
+
+
+## COMMENTS
+
+I CommentOrderCreate: manager can leave a comment under order
 
 
 ## Installation
