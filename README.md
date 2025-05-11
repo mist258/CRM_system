@@ -6,53 +6,53 @@
 ## AUTH
 
 
-I SendActivationEmail: sending an email to the user with a token to activate the account
+I **SendActivationEmail**: sending an email to the user with a token to activate the account
 
-II ActivationManager: allows the activation of a user's account
+II **ActivationManager**: allows the activation of a user's account
 
-III RecoveryPasswordRequest: send a request to reset password
+III **RecoveryPasswordRequest**: send a request to reset password
 
-IV RecoveryPassword: resets the password using the token
+IV **RecoveryPassword**: resets the password using the token
 
 ## ORDERS
 
-I OrderList: show all orders
+I **OrderList**: show all orders
 
-II GetMyOrders: manager can review their own orders
+II **GetMyOrders**: manager can review their own orders
 
-III UpdateOrder: manager can update order by id
+III **UpdateOrder**: manager can update order by id
 
-IV GeneralOrdersStatistics: admin can view general statistics on orders
+IV **GeneralOrdersStatistics**: admin can view general statistics on orders
 
-V OrderStatisticsByManager: admin can view general statistics on orders by each manager
+V **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
 
 
 ## USERS
 
-I ListCreateManager: create new user
+I **ListCreateManager**: create new user
 
-II ManagerBan: blocks the Manager
+II **ManagerBan**: blocks the Manager
 
-III ManagerUnban: unlocks the Manager
+III **ManagerUnban**: unlocks the Manager
 
-IV  GetMe: get info about me (authenticated )
+IV  **GetMe**: get info about me (authenticated )
 
 
 ## GROUPS
 
-I CreateListGroup: create grooup or list all groups
+I **CreateListGroup**: create grooup or list all groups
 
-II RetrieveGroup: get order by id
+II **RetrieveGroup**: get order by id
 
 
 ## COMMENTS
 
-I CommentOrderCreate: manager can leave a comment under order
+I **CommentOrderCreate**: manager can leave a comment under order
 
 
 ## Installation
 
-Install project 
+**Install project** 
 
 ```bash
   https://github.com/mist258/CRM_system.git
