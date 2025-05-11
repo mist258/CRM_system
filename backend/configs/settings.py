@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.auth',
     'apps.orders',
+    'apps.comments',
+    'apps.groups',
 
 ]
 

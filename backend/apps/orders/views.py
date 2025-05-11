@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Count
 from django.utils.decorators import method_decorator
 
-from rest_framework import generics, mixins, status
+from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -15,13 +15,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
 from .models import GroupModel, OrdersModel
-from .serializers import (
-    AssignOrderToManagerSerializer,
-    CommentsSerializer,
-    GroupSerializer,
-    ManagerStatisticsSerializer,
-    OrderSerializer,
-)
+from .serializers import ManagerStatisticsSerializer, OrderSerializer  # AssignOrderToManagerSerializer,
 
 UserModel = get_user_model()
 
@@ -40,32 +34,6 @@ class OrderListView(generics.ListAPIView):
     search_fields = ['email', 'phone', 'surname']
 
 
-@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='add manager to chosen order'))
-class AssignedOrderToManager(generics.GenericAPIView):
-    '''
-        Assign order to manager
-        (for authenticated manager)
-    '''
-    permission_classes = (IsAuthenticated,)
-    queryset = OrdersModel.objects.all()
-    serializer_class = AssignOrderToManagerSerializer
-
-    def post(self, request, *args, **kwargs):
-        order = self.get_object()
-        user = self.request.user
-
-        if order.manager is not None or (order.status not in ["New", None]):
-            return Response({"detail": "Another manager has been "
-                                       "assigned to this order"},
-                            status.HTTP_400_BAD_REQUEST)
-
-        order.manager = user
-        order.status = "In work"
-        order.save() 
-        serializer = OrderSerializer(order)
-        return Response(serializer.data, status.HTTP_201_CREATED)
-
-
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order',
                                                             responses={200: OrderSerializer()}))
 class GetMyOrdersView(generics.ListAPIView):
@@ -79,69 +47,6 @@ class GetMyOrdersView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return OrdersModel.objects.filter(manager=user)
-
-
-@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='manager can create comments to order'))
-class CommentOrderCreateView(generics.GenericAPIView):
-    '''
-        manager can create comments to order
-        (for authenticated manager)
-    '''
-    permission_classes = (IsAuthenticated,)
-    queryset = OrdersModel.objects.prefetch_related('comments').all()
-    serializer_class = CommentsSerializer
-
-    def post(self, request, *args, **kwargs):
-        order = self.get_object()
-        user = self.request.user
-        data =  self.request.data
-
-        if order.manager is not None and order.manager != user:
-            return Response({"detail": "Another manager has been "
-                             "assigned to this order"}, status.HTTP_400_BAD_REQUEST)
-
-        if order.manager is None:
-            order.manager = user
-            order.status = "In work"
-            order.save()
-
-        serializer = CommentsSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(order=order)
-        comment_serializer = OrderSerializer(order)
-        return Response(comment_serializer.data, status.HTTP_201_CREATED)
-
-
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all groups'))
-@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create group'))
-class CreateListGroupView(generics.GenericAPIView, mixins.CreateModelMixin, mixins.ListModelMixin):
-    '''
-        create new group or list all groups
-        (for authenticated manager)
-    '''
-    permission_classes = (IsAuthenticated,)
-    serializer_class = GroupSerializer
-    queryset = GroupModel.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get group by id'))
-class RetrieveGroupView(generics.GenericAPIView, mixins.RetrieveModelMixin):
-    '''
-        retrieve group by id
-        (for authenticated manager)
-    '''
-    permission_classes = (IsAuthenticated,)
-    serializer_class = GroupSerializer
-    queryset = GroupModel.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
 
 
 @method_decorator(name='put', decorator=swagger_auto_schema(operation_id='update order by id'))

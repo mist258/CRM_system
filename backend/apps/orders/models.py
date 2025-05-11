@@ -2,25 +2,19 @@ from django.contrib.auth import get_user_model
 from django.core import validators
 from django.db import models
 
-from core.models import BaseModel
+from apps.groups.models import GroupModel
 
-from .choices.application_choices import CoursesChoices, FormatCourseChoices, StatusChoices, TypeCourseChoices
+from.choices.application_choices import CoursesChoices, FormatCourseChoices, StatusChoices, TypeCourseChoices
+from core.models import BaseModel
 
 UserModel = get_user_model()
 
-
-class GroupModel(models.Model):
-    class Meta:
-        db_table = 'group_order'
-        ordering = ('id',)
-
-    name = models.CharField(max_length=100, unique=True)
 
 class OrdersModel(models.Model):
 
     class Meta:
         db_table = 'orders'
-        ordering = ('id',)
+        ordering = ('-id',)
 
     name = models.CharField(max_length=25, validators=[validators.RegexValidator(regex=r'^[A-Za-z]*$')],
                             error_messages={'Details': 'Name is not valid'},
@@ -50,12 +44,3 @@ class OrdersModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     manager = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, related_name='orders')
     group = models.ForeignKey(GroupModel, on_delete=models.SET_NULL, null=True, related_name='order_group')
-
-
-class CommentsModel(BaseModel):
-    class Meta:
-        db_table = 'comments'
-        ordering = ('id',)
-
-    text = models.TextField(max_length=100)
-    order = models.ForeignKey(OrdersModel, on_delete=models.SET_NULL, null=True, related_name='comments')

@@ -3,34 +3,13 @@ from django.db.models import Count
 
 from rest_framework import serializers
 
+from apps.comments.serializers import CommentsSerializer
+from apps.groups.serializers import GroupSerializer
 from apps.users.serializers import ProfileSerializer, UserSerializer
 
-from .models import CommentsModel, GroupModel, OrdersModel
+from .models import OrdersModel
 
 UserModel = get_user_model()
-
-
-class CommentsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = CommentsModel
-        fields = ('id',
-                  'text',
-                  'order',
-                  )
-
-        read_only_fields = ('id',
-                            'created_at',
-                            'order',
-                            )
-
-class GroupSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = GroupModel
-        fields = ('id',
-                  'name',
-                  )
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -69,21 +48,6 @@ class OrderSerializer(serializers.ModelSerializer):
                 'required': True
             },
         }
-
-
-class AssignOrderToManagerSerializer(serializers.ModelSerializer):
-    orders = OrderSerializer(many=True, read_only=True)
-    name = serializers.CharField(source='profile.name', read_only=True)
-    surname = serializers.CharField(source='profile.surname', read_only=True)
-
-    class Meta:
-        model = UserModel
-        fields = ('id',
-                  'email',
-                  'name',
-                  'surname',
-                  'orders',
-                  )
 
 
 class ManagerStatisticsSerializer(serializers.ModelSerializer):
