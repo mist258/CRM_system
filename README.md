@@ -25,13 +25,14 @@ IV CommentOrderCreate: manager can leave a comment under order
 
 V CreateListGroup: create grooup or list all groups
 
-VI UpdateOrder: manager can update order by id
+VI RetrieveGroup: get order by id
 
-VII GeneralOrdersStatistics: admin can view general statistics on orders
+VII UpdateOrder: manager can update order by id
 
-VIII OrderStatisticsByManager: admin can view general statistics on orders by each manager
+VIII GeneralOrdersStatistics: admin can view general statistics on orders
 
-IX RetrieveGroup: get order by id
+IX OrderStatisticsByManager: admin can view general statistics on orders by each manager
+
 
 ## USERS
 
@@ -41,7 +42,7 @@ II ManagerBan: blocks the Manager
 
 III ManagerUnban: unlocks the Manager
 
-IV  GetMe: get info about me (authenticated manager)
+IV  GetMe: get info about me (authenticated )
 
 
 ## Installation
