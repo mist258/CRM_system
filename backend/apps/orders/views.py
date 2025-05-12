@@ -55,17 +55,27 @@ class UpdateOrderView(generics.GenericAPIView):
         manager can update order
         (for authenticated manager)
     '''
-    permission_classes = (IsAuthenticated, IsOrderOwner,)
+    permission_classes = ( IsAuthenticated, IsOrderOwner, )
     serializer_class = OrderSerializer
 
     def put(self, request, *args, **kwargs):
         order = get_object_or_404(OrdersModel, pk=self.kwargs['order_pk'])
+        user = self.request.user
         self.check_object_permissions(request, order)
 
         group = get_object_or_404(GroupModel, pk=self.kwargs['group_pk'])
 
-        order.group = group
-        order.save()
+
+        if order.manager == user and order.status is not None:
+            order.manager = user
+            order.status = 'In work'
+            order.group = group
+            order.save()
+
+        else:
+            return Response({"detail": "Another manager has been "
+                                       "assigned to this order"},
+                                status.HTTP_400_BAD_REQUEST)
 
         if request.data:
             serializer = self.get_serializer(order, data=request.data)

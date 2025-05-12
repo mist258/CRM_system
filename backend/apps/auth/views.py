@@ -36,7 +36,7 @@ class SendActivationEmailView(generics.GenericAPIView):
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id='activate manager'))
 class ActivationManagerView(generics.GenericAPIView):
     '''
-        manager activation
+       token to activate manager
     '''
     serializer_class = SetPasswordSerializer
     permission_classes = (IsManagerPermission, IsSuperUser,)

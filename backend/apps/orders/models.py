@@ -16,10 +16,12 @@ class OrdersModel(models.Model):
         db_table = 'orders'
         ordering = ('-id',)
 
-    name = models.CharField(max_length=25, validators=[validators.RegexValidator(regex=r'^[A-Za-z]*$')],
+    name = models.CharField(max_length=25, validators=[validators.RegexValidator
+                                                       (regex = r"^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ']{1,29}$")],
                             error_messages={'Details': 'Name is not valid'},
                             blank=True, null=True)
-    surname = models.CharField(max_length=25, validators=[validators.RegexValidator(regex=r'^[A-Za-z]*$')],
+    surname = models.CharField(max_length=25, validators=[validators.RegexValidator
+                                                          (regex = r"^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ']{1,29}$")],
                                error_messages={'Details': 'Surname is not valid'},
                                blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
