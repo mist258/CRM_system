@@ -6,48 +6,53 @@
 ## AUTH
 
 
-I SendActivationEmail: sending an email to the user with a token to activate the account
+I **SendActivationEmail**: sending an email to the user with a token to activate the account
 
-II ActivationManager: allows the activation of a user's account
+II **ActivationManager**: allows the activation of a user's account
 
-III RecoveryPasswordRequest: send a request to reset password
+III **RecoveryPasswordRequest**: send a request to reset password
 
-IV RecoveryPassword: resets the password using the token
-## Orders
+IV **RecoveryPassword**: resets the password using the token
 
-I OrderList: show all orders
+## ORDERS
 
-II AssignedOrderToManager: manager can take the order to work 
+I **OrderList**: show all orders
 
-III GetMyOrders: manager can review their own orders
+II **GetMyOrders**: manager can review their own orders
 
-IV CommentOrderCreate: manager can leave a comment under order
+III **UpdateOrder**: manager can update order by id
 
-V CreateListGroup: create grooup or list all groups
+IV **GeneralOrdersStatistics**: admin can view general statistics on orders
 
-VI RetrieveGroup: get order by id
-
-VII UpdateOrder: manager can update order by id
-
-VIII GeneralOrdersStatistics: admin can view general statistics on orders
-
-IX OrderStatisticsByManager: admin can view general statistics on orders by each manager
+V **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
 
 
 ## USERS
 
-I ListCreateManager: create new user
+I **ListCreateManager**: create new user
 
-II ManagerBan: blocks the Manager
+II **ManagerBan**: blocks the Manager
 
-III ManagerUnban: unlocks the Manager
+III **ManagerUnban**: unlocks the Manager
 
-IV  GetMe: get info about me (authenticated )
+IV  **GetMe**: get info about me (authenticated )
+
+
+## GROUPS
+
+I **CreateListGroup**: create grooup or list all groups
+
+II **RetrieveGroup**: get order by id
+
+
+## COMMENTS
+
+I **CommentOrderCreate**: manager can leave a comment under order
 
 
 ## Installation
 
-Install project 
+**Install project** 
 
 ```bash
   https://github.com/mist258/CRM_system.git
