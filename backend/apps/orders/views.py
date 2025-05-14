@@ -29,24 +29,8 @@ class OrderListView(generics.ListAPIView):
     queryset = OrdersModel.objects.select_related('manager', 'group').prefetch_related('comments').all()
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
-    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = OrderFilter
-    search_fields = ['email', 'phone', 'surname']
-
-
-# @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager order',
-#                                                             responses={200: OrderSerializer()}))
-# class GetMyOrdersView(generics.ListAPIView):
-#     '''
-#         show all orders of authenticated manager
-#         (for authenticated manager)
-#     '''
-#     permission_classes = (IsAuthenticated,)
-#     serializer_class = OrderSerializer
-#
-#     def get_queryset(self):
-#         user = self.request.user
-#         return OrdersModel.objects.filter(manager=user)
 
 
 @method_decorator(name='put', decorator=swagger_auto_schema(operation_id='update order by id'))
