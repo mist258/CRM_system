@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
-from django.core import validators
+from django.core import validators as v
 from django.db import models
 
 from apps.groups.models import GroupModel
 
 from.choices.application_choices import CoursesChoices, FormatCourseChoices, StatusChoices, TypeCourseChoices
 from core.models import BaseModel
+
+from .regex import OrderValidationRegex
 
 UserModel = get_user_model()
 
@@ -16,19 +18,17 @@ class OrdersModel(models.Model):
         db_table = 'orders'
         ordering = ('-id',)
 
-    name = models.CharField(max_length=25, validators=[validators.RegexValidator
-                                                       (regex = r"^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ']{1,29}$")],
-                            error_messages={'Details': 'Name is not valid'},
-                            blank=True, null=True)
-    surname = models.CharField(max_length=25, validators=[validators.RegexValidator
-                                                          (regex = r"^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ']{1,29}$")],
-                               error_messages={'Details': 'Surname is not valid'},
-                               blank=True, null=True)
+    name = models.CharField(max_length=25, validators=[v.RegexValidator(OrderValidationRegex.NAME_SURNAME.pattern,
+                                                                                 OrderValidationRegex.NAME_SURNAME.msg)],
+                                                                                 blank=True, null=True)
+    surname = models.CharField(max_length=25, validators=[v.RegexValidator(OrderValidationRegex.NAME_SURNAME.pattern,
+                                                                           OrderValidationRegex.NAME_SURNAME.msg)],
+                                                                           blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    phone = models.CharField(max_length=15, validators=[validators.RegexValidator(regex=r'^\+?380\d{9}$')],
-                             error_messages={'Details': 'Phone number is not valid'},
-                             blank=True, null=True)
-    age = models.IntegerField(validators=[validators.MinValueValidator(16), validators.MaxValueValidator(100)],
+    phone = models.CharField(max_length=15, validators=[v.RegexValidator(OrderValidationRegex.PHONE_NUMBER.pattern,
+                                                                         OrderValidationRegex.PHONE_NUMBER.msg)],
+                                                                         blank=True, null=True)
+    age = models.IntegerField(validators=[v.MinValueValidator(16), v.MaxValueValidator(100)],
                               error_messages={'Details':'Available year\'s range: 16 - 100'},
                               blank=True, null=True)
     course = models.CharField(max_length=4, choices=CoursesChoices.choices,
