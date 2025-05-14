@@ -7,10 +7,10 @@ from .models import OrdersModel
 class OrderFilter(filters.FilterSet):
 
     # search by incomplete pattern
-    name = filters.CharFilter(field_name='name', lookup_expr='icontains')
-    surname = filters.CharFilter(field_name='surname', lookup_expr='icontains')
-    email = filters.CharFilter(field_name='email', lookup_expr='icontains')
-    phone = filters.CharFilter(field_name='phone', lookup_expr='icontains')
+    name = filters.CharFilter('name', 'icontains')
+    surname = filters.CharFilter('surname', 'icontains')
+    email = filters.CharFilter('email', 'icontains')
+    phone = filters.CharFilter('phone', 'icontains')
 
     # search in range
     sum_range = filters.RangeFilter(field_name='sum')
@@ -18,10 +18,10 @@ class OrderFilter(filters.FilterSet):
     age_range = filters.RangeFilter(field_name='age')
 
     # search in choices
-    course = filters.ChoiceFilter(field_name='course', choices=CoursesChoices)
-    course_type = filters.ChoiceFilter(field_name='course_type', choices=TypeCourseChoices)
-    status = filters.ChoiceFilter(field_name='status', choices=StatusChoices )
-    course_format = filters.ChoiceFilter(field_name='course_format', choices=FormatCourseChoices)
+    course = filters.ChoiceFilter('course', choices=CoursesChoices)
+    course_type = filters.ChoiceFilter('course_type', choices=TypeCourseChoices)
+    status = filters.ChoiceFilter('status', choices=StatusChoices )
+    course_format = filters.ChoiceFilter('course_format', choices=FormatCourseChoices)
 
     # shows the manager his own requests
     own_orders = filters.BooleanFilter(method='filter_own_orders')
