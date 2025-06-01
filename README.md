@@ -21,11 +21,11 @@ V **CrateActivationTokenForManager**: create activation token for manager
 
 I **OrderList**: show all orders
 
-III **UpdateOrder**: manager can update order by id
+II **UpdateOrder**: manager can update order by id
 
-IV **GeneralOrdersStatistics**: admin can view general statistics on orders
+III **GeneralOrdersStatistics**: admin can view general statistics on orders
 
-V **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
+IV **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
 
 
 ## USERS
