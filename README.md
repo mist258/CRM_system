@@ -69,4 +69,7 @@ I **CommentOrderCreate**: manager can leave a comment under order
  ./manage.py createsuperuser
 
 ```
-    
+## Tools
+
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/djangorest/djangorest-original.svg" />
+          
