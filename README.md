@@ -69,14 +69,6 @@ I **CommentOrderCreate**: manager can leave a comment under order
  ./manage.py createsuperuser
 
 ```
-## Tools
-
-![image](https://github.com/user-attachments/assets/df1e2918-97c2-4b6a-aa15-01d612065489)
-![image](https://github.com/user-attachments/assets/f0ce8bfd-378f-4e5a-9acc-80051c7853a5)
-![image](https://github.com/user-attachments/assets/67a9b7ab-c894-459b-af88-7493556eabce)
-![image](https://github.com/user-attachments/assets/9b866fdd-6f74-4f6c-b5fb-1add118260f3)
-![image](https://github.com/user-attachments/assets/d5315227-4dbe-452a-ad2d-8d11f6d0590d)
-![image](https://github.com/user-attachments/assets/4a0efb83-40f9-4769-87ca-9aa9b836ed6e)
 
 
 
