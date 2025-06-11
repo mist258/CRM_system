@@ -14,17 +14,18 @@ III **RecoveryPasswordRequest**: send a request to reset password
 
 IV **RecoveryPassword**: resets the password using the token
 
+V **CrateActivationTokenForManager**: create activation token for manager
+
+
 ## ORDERS
 
 I **OrderList**: show all orders
 
-II **GetMyOrders**: manager can review their own orders
+II **UpdateOrder**: manager can update order by id
 
-III **UpdateOrder**: manager can update order by id
+III **GeneralOrdersStatistics**: admin can view general statistics on orders
 
-IV **GeneralOrdersStatistics**: admin can view general statistics on orders
-
-V **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
+IV **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
 
 
 ## USERS
@@ -68,4 +69,9 @@ I **CommentOrderCreate**: manager can leave a comment under order
  ./manage.py createsuperuser
 
 ```
-    
+
+
+
+
+
+
