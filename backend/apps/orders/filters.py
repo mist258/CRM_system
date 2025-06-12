@@ -16,6 +16,7 @@ class OrderFilter(filters.FilterSet):
     sum_range = filters.RangeFilter(field_name='sum')
     alreadyPaid_range = filters.RangeFilter(field_name='alreadyPaid')
     age_range = filters.RangeFilter(field_name='age')
+    created_at = filters.DateFromToRangeFilter(field_name='created_at')
 
     # search in choices
     course = filters.ChoiceFilter('course', choices=CoursesChoices)
