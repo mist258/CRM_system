@@ -1,11 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count
 
 from rest_framework import serializers
 
 from apps.comments.serializers import CommentsSerializer
 from apps.groups.serializers import GroupSerializer
-from apps.users.serializers import ProfileSerializer, UserSerializer
+from apps.users.serializers import UserSerializer
 
 from .models import OrdersModel
 
@@ -50,30 +49,3 @@ class OrderSerializer(serializers.ModelSerializer):
         }
 
 
-class ManagerStatisticsSerializer(serializers.ModelSerializer):
-    order_statistics = serializers.SerializerMethodField()
-    profile = ProfileSerializer(read_only=True)
-
-    class Meta:
-        model = UserModel
-        fields = ('id',
-                  'email',
-                  'profile',
-                  'order_statistics',
-                  )
-
-    def get_order_statistics(self, obj):
-        orders = OrdersModel.objects.filter(manager=obj)
-
-        status_count = orders.values('status').annotate(total=Count('status'))
-
-        statistics = {}
-
-        for item in status_count:
-            status_name = item['status']
-            statistics[status_name] = item['total']
-
-        return {
-            'total_orders': orders.count(),
-            'by_status': statistics
-        }

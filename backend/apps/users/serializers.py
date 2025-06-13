@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 from django.db.transaction import atomic
 
 from rest_framework import serializers
+
+from apps.orders.models import OrdersModel
 
 from .models import UserProfileModel
 
@@ -57,4 +60,32 @@ class UserSerializer(serializers.ModelSerializer):
         UserProfileModel.objects.create(user=user, **profile)
         return user
 
+
+class ManagerStatisticsSerializer(serializers.ModelSerializer):
+    order_statistics = serializers.SerializerMethodField()
+    profile = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = UserModel
+        fields = ('id',
+                  'email',
+                  'profile',
+                  'order_statistics',
+                  )
+
+    def get_order_statistics(self, obj):
+        orders = OrdersModel.objects.filter(manager=obj)
+
+        status_count = orders.values('status').annotate(total=Count('status'))
+
+        statistics = {}
+
+        for item in status_count:
+            status_name = item['status']
+            statistics[status_name] = item['total']
+
+        return {
+            'total_orders': orders.count(),
+            'by_status': statistics
+        }
 

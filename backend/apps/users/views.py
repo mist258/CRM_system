@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from core.permissions.is_superuser_permission import IsSuperUser
 from drf_yasg.utils import swagger_auto_schema
 
-from .serializers import UserSerializer
+from .serializers import ManagerStatisticsSerializer, UserSerializer
 
 UserModel = get_user_model()
 
@@ -20,14 +20,20 @@ UserModel = get_user_model()
 class ListCreateManagerView(generics.ListCreateAPIView):
     '''
     get:
-        create a new manager
-    post:
         list all managers
         (allowed superuser only)
+    post:
+        create a new manager
+
     '''
     queryset = UserModel.objects.select_related('profile').all()
-    serializer_class = UserSerializer
     permission_classes = (IsSuperUser,)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ManagerStatisticsSerializer
+        return UserSerializer
+
 
 @method_decorator(name='patch', decorator=swagger_auto_schema(operation_id = 'ban manager by id',
                                                             responses={200: UserSerializer()}))

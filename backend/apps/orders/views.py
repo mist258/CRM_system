@@ -3,7 +3,7 @@ from django.db.models import Count
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
-from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,7 +15,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
 from .models import GroupModel, OrdersModel
-from .serializers import ManagerStatisticsSerializer, OrderSerializer  # AssignOrderToManagerSerializer,
+from .serializers import OrderSerializer
 
 UserModel = get_user_model()
 
@@ -99,16 +99,3 @@ class GeneralOrdersStatisticsView(generics.GenericAPIView):
             'total_orders': total_orders,
             'by_status': by_status},
             status.HTTP_200_OK)
-
-
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get manager orders statistics'))
-class  OrderStatisticsByManagerView(generics.ListAPIView):
-    '''
-     show general orders statistics by each manager
-     (for admin)
-    '''
-    serializer_class = ManagerStatisticsSerializer
-    permission_classes = (IsSuperUser,)
-
-    def get_queryset(self):
-        return UserModel.objects.select_related('profile').filter(orders__isnull=False).distinct()
