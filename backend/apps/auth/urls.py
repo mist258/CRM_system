@@ -2,9 +2,8 @@ from django.urls import path
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import (
+from .views import (  # CrateActivationTokenForManagerView,
     ActivationManagerView,
-    CrateActivationTokenForManagerView,
     RecoveryPasswordRequestView,
     RecoveryPasswordView,
     SendActivationEmailView,
@@ -17,6 +16,6 @@ urlpatterns = [
     path('/<int:pk>/email', SendActivationEmailView.as_view(), name='token_email'),
     path('/manager/recovery_request', RecoveryPasswordRequestView.as_view(), name='auth_recovery'),
     path('/manager/change_password/<str:token>', RecoveryPasswordView.as_view(), name='auth_recovery'),
-    path('/manager/<int:pk>/activation_token', CrateActivationTokenForManagerView.as_view(), name='create_token'),
+    #path('/manager/<int:pk>/activation_token', CrateActivationTokenForManagerView.as_view(), name='create_token'),
 
 ]

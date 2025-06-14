@@ -3,6 +3,7 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
@@ -25,7 +26,7 @@ class SendActivationEmailView(generics.GenericAPIView):
     '''
     serializer_class = UserSerializer
     queryset = UserModel.objects.all()
-    
+
     def post(self, *args, **kwargs):
         user = self.get_object()
         EmailService.activate(user)
@@ -39,7 +40,7 @@ class ActivationManagerView(generics.GenericAPIView):
        token to activate manager
     '''
     serializer_class = SetPasswordSerializer
-    permission_classes = (IsManagerPermission, IsSuperUser,)
+    permission_classes = (AllowAny,)
 
     def patch(self, request, *args, **kwargs):
         data = request.data
@@ -93,16 +94,16 @@ class RecoveryPasswordView(generics.GenericAPIView):
                         status.HTTP_200_OK)
 
 
-@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create activation token for user'))
-class CrateActivationTokenForManagerView(generics.GenericAPIView):
-    '''
-        create activation token for manager
-    '''
-    permission_classes = (IsSuperUser,)
-    queryset = UserModel.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        user = self.get_object()
-        token = JWTService.generate_token(user, ActivateToken)
-        return Response({"Activation token": str(token)},
-                        status.HTTP_200_OK)
+# @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create activation token for user'))
+# class CrateActivationTokenForManagerView(generics.GenericAPIView):
+#     '''
+#         create activation token for manager
+#     '''
+#     permission_classes = (IsSuperUser,)
+#     queryset = UserModel.objects.all()
+#
+#     def post(self, request, *args, **kwargs):
+#         user = self.get_object()
+#         token = JWTService.generate_token(user, ActivateToken)
+#         return Response({"Activation token": str(token)},
+#                         status.HTTP_200_OK)
