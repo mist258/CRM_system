@@ -3,14 +3,18 @@ from django.db.models import Count
 from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
+from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from core.permissions.is_order_owner import IsOrderOwner
 from core.permissions.is_superuser_permission import IsSuperUser
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_excel.mixins import XLSXFileMixin
+from drf_excel.renderers import XLSXRenderer
 from drf_yasg.utils import swagger_auto_schema
 
 from .filters import OrderFilter
@@ -20,10 +24,10 @@ from .serializers import OrderSerializer
 UserModel = get_user_model()
 
 
-@method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get all orders'))
-class OrderListView(generics.ListAPIView):
+@method_decorator(name='list', decorator=swagger_auto_schema(operation_id='get all orders'))
+class OrderViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
     '''
-        Show all orders
+        Show all orders with filters
         (for authenticated users)
     '''
     queryset = OrdersModel.objects.select_related('manager', 'group').prefetch_related('comments').all()
@@ -31,6 +35,19 @@ class OrderListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = OrderFilter
+
+    @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='export all orders'))
+    @action(detail=False, methods=['get'], renderer_classes=[XLSXRenderer])
+    def export_to_excel(self, request):
+        '''
+            export all orders to excel
+            (for authenticated users)
+        '''
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, headers={
+            'Content-Disposition': 'attachment; filename="orders.xlsx"'
+        })
 
 
 @method_decorator(name='put', decorator=swagger_auto_schema(operation_id='update order by id'))

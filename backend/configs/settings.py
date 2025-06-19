@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'django_celery_results',
+    'drf_excel',
 
     # my apps
     'core',

@@ -361,6 +361,21 @@ python-jose = ["python-jose (==3.3.0)"]
 test = ["cryptography", "freezegun", "pytest", "pytest-cov", "pytest-django", "pytest-xdist", "tox"]
 
 [[package]]
+name = "drf-excel"
+version = "2.5.3"
+description = "Django REST Framework renderer for Excel spreadsheet (xlsx) files."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "drf_excel-2.5.3-py3-none-any.whl", hash = "sha256:3c1e3a0f925394eec348a0d133288ab9cb4e7e676d2dbbc1f3a9c038167543e6"},
+    {file = "drf_excel-2.5.3.tar.gz", hash = "sha256:cac688c4b7581d7cfde1e6dfa88bcbc649939e4277a052877109d40934692202"},
+]
+
+[package.dependencies]
+djangorestframework = ">=3.14"
+openpyxl = ">=2.4"
+
+[[package]]
 name = "drf-yasg"
 version = "1.21.10"
 description = "Automated generation of real Swagger/OpenAPI 2.0 schemas from Django Rest Framework code."
@@ -383,6 +398,17 @@ uritemplate = ">=3.0.0"
 [package.extras]
 coreapi = ["coreapi (>=2.3.3)", "coreschema (>=0.0.4)"]
 validation = ["swagger-spec-validator (>=2.1.0)"]
+
+[[package]]
+name = "et-xmlfile"
+version = "2.0.0"
+description = "An implementation of lxml.xmlfile for the standard library"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "et_xmlfile-2.0.0-py3-none-any.whl", hash = "sha256:7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa"},
+    {file = "et_xmlfile-2.0.0.tar.gz", hash = "sha256:dab3f4764309081ce75662649be815c4c9081e88f0837825f90fd28317d4da54"},
+]
 
 [[package]]
 name = "inflection"
@@ -460,6 +486,20 @@ files = [
     {file = "mysqlclient-2.2.7-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:977e35244fe6ef44124e9a1c2d1554728a7b76695598e4b92b37dc2130503069"},
     {file = "mysqlclient-2.2.7.tar.gz", hash = "sha256:24ae22b59416d5fcce7e99c9d37548350b4565baac82f95e149cac6ce4163845"},
 ]
+
+[[package]]
+name = "openpyxl"
+version = "3.1.5"
+description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "openpyxl-3.1.5-py2.py3-none-any.whl", hash = "sha256:5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2"},
+    {file = "openpyxl-3.1.5.tar.gz", hash = "sha256:cf0e3cf56142039133628b5acffe8ef0c12bc902d2aadd3e0fe5878dc08d1050"},
+]
+
+[package.dependencies]
+et-xmlfile = "*"
 
 [[package]]
 name = "packaging"
@@ -693,4 +733,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "612a4899abf6a643d4ddf02fe51da4c45a75ea3ca9060c5067a91c52b3d9e3d8"
+content-hash = "f8e241818f75d7ec93e0d52b30551c1c73744cc39248cb51f769e2bd47ea616f"
