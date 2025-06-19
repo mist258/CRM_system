@@ -94,16 +94,16 @@ class RecoveryPasswordView(generics.GenericAPIView):
                         status.HTTP_200_OK)
 
 
-# @method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create activation token for user'))
-# class CrateActivationTokenForManagerView(generics.GenericAPIView):
-#     '''
-#         create activation token for manager
-#     '''
-#     permission_classes = (IsSuperUser,)
-#     queryset = UserModel.objects.all()
-#
-#     def post(self, request, *args, **kwargs):
-#         user = self.get_object()
-#         token = JWTService.generate_token(user, ActivateToken)
-#         return Response({"Activation token": str(token)},
-#                         status.HTTP_200_OK)
+@method_decorator(name='post', decorator=swagger_auto_schema(operation_id='create activation token for user'))
+class CrateActivationTokenForManagerView(generics.GenericAPIView):
+    '''
+        create activation token for manager
+    '''
+    permission_classes = (IsSuperUser,)
+    queryset = UserModel.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        token = JWTService.generate_token(user, ActivateToken)
+        return Response({"URL": f'http://localhost:3000/activate/{str(token)}'},
+                        status.HTTP_200_OK)
