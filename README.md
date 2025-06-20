@@ -19,7 +19,10 @@ V **CrateActivationTokenForManager**: create activation token for manager
 
 ## ORDERS
 
-I **OrderList**: show all orders
+I **OrderViewSet**: 
+- show all orders (http://localhost:8000/api/orders/list/)
+- show order by specific id (http://localhost:8000/api/orders/list/1/)
+- export filtered (or non filtered) orders to excel file (http://localhost:8000/api/orders/list/export_to_excel/)
 
 II **UpdateOrder**: manager can update order by id
 
