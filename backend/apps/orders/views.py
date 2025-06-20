@@ -28,6 +28,7 @@ UserModel = get_user_model()
 class OrderViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
     '''
         Show all orders with filters
+        or selected by a specific id
         (for authenticated users)
     '''
     queryset = OrdersModel.objects.select_related('manager', 'group').prefetch_related('comments').all()
