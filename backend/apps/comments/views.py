@@ -37,5 +37,6 @@ class CommentOrderCreateView(generics.GenericAPIView):
         serializer = CommentsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save(order=order)
+        order.refresh_from_db()
         comment_serializer = OrderSerializer(order)
         return Response(comment_serializer.data, status.HTTP_201_CREATED)
