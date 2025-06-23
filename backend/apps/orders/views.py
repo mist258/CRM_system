@@ -40,7 +40,7 @@ class OrderViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
     @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='export all orders'))
     @action(detail=False, methods=['get'], renderer_classes=[XLSXRenderer])
-    def export_to_excel(self, request):
+    def orders_to_excel(self, request):
         '''
             export all orders to excel
             (for authenticated users)

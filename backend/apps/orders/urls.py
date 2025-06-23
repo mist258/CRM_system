@@ -10,5 +10,5 @@ router.register(r'list', OrderViewSet, basename='list_export_orders')
 urlpatterns = [
     path('/', include(router.urls)),
     path('/general_statistic', GeneralOrdersStatisticsView.as_view(), name='general_statistic'),
-    path('/<int:pk>/update', UpdateOrderView.as_view(), name='update_order'),
+    path('/<int:pk>/orders', UpdateOrderView.as_view(), name='update_order'),
 ]
