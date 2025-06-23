@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import generics, status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -52,40 +53,14 @@ class OrderViewSet(XLSXFileMixin, ReadOnlyModelViewSet):
 
 
 @method_decorator(name='put', decorator=swagger_auto_schema(operation_id='update order by id'))
-class UpdateOrderView(generics.GenericAPIView):
+class UpdateOrderView(generics.UpdateAPIView):
     '''
         manager can update order
         (for authenticated manager)
     '''
     permission_classes = ( IsAuthenticated, IsOrderOwner, )
     serializer_class = OrderSerializer
-
-    def put(self, request, *args, **kwargs):
-        order = get_object_or_404(OrdersModel, pk=self.kwargs['order_pk'])
-        user = self.request.user
-        self.check_object_permissions(request, order)
-
-        group = get_object_or_404(GroupModel, pk=self.kwargs['group_pk'])
-
-
-        if order.manager == user and order.status is not None:
-            order.manager = user
-            order.status = 'In work'
-            order.group = group
-            order.save()
-
-        else:
-            return Response({"detail": "Another manager has been "
-                                       "assigned to this order"},
-                                status.HTTP_400_BAD_REQUEST)
-
-        if request.data:
-            serializer = self.get_serializer(order, data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save(order=order)
-
-        result = OrderSerializer(order)
-        return Response(result.data, status.HTTP_200_OK)
+    queryset = OrdersModel.objects.all()
 
 
 @method_decorator(name='get', decorator=swagger_auto_schema(operation_id='get general orders statistics'))
