@@ -70,6 +70,7 @@ class ManagerStatisticsSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'email',
                   'profile',
+                  'is_active',
                   'order_statistics',
                   )
 
