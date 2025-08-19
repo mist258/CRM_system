@@ -1,57 +1,62 @@
 
 # CRM-system for managers API (DRF)
 
+**Python version** - 3.10
+
+**Database** - PostgreSQL
 
 
 ## AUTH
 
+**/api/auth**: login user (for registered users)
 
-I **SendActivationEmail**: sending an email to the user with a token to activate the account
+**/api/auth/refresh**: get refresh token 
 
-II **ActivationManager**: allows the activation of a user's account
+**/api/auth/<int:pk>/email**: sending an email to the user with a token to activate the account (for superuser)
 
-III **RecoveryPasswordRequest**: send a request to reset password
+**/api/auth/activate/<str:token>**: activate manager's account (for superuser)
 
-IV **RecoveryPassword**: resets the password using the token
+**/api/auth/managers/recovery_request**: send request email for recoovery password (for registered users)
 
-V **CrateActivationTokenForManager**: create activation token for manager
+**/api/auth/managers/change_password/<str:token>**: change password (for registered users)
+
+**/api/auth/managers/<int:pk>/activation_token**: superuser can create activation token for users (for superuser)
 
 
 ## ORDERS
 
-I **OrderViewSet**: 
-- show all orders (/api/orders/list/)
-- show order by specific id (/api/orders/list/1/)
-- export filtered (or non filtered) orders to excel file (/api/orders/list/orders_to_excel/)
+**/api/orders/list/**:  show all orders 
 
-II **UpdateOrder**: manager can update order by id
+**/api/orders/list/1/**: show order by specific id
 
-III **GeneralOrdersStatistics**: admin can view general statistics on orders
+**/api/orders/list/orders_to_excel/**: export filtered (or non filtered) orders to excel file
 
-IV **OrderStatisticsByManager**: admin can view general statistics on orders by each manager
+**/api/orders/general_statistic**: statistic by orders
+
+**/api/orders//<int:pk>/orders**:  manager can update order
 
 
 ## USERS
 
-I **ListCreateManager**: create new user
+**/api/users/managers**: create new user
 
-II **ManagerBan**: blocks the Manager
+**/api/users/managers/<int:pk>/ban**: blocks the Manager
 
-III **ManagerUnban**: unlocks the Manager
+**/api/users/managers/<int:pk>/unban**: unlocks the Manager
 
-IV  **GetMe**: get info about me (authenticated )
+**/api/useers/managers/info**: get info about me (authenticated )
 
 
 ## GROUPS
 
-I **CreateListGroup**: create grooup or list all groups
+**/api/groups**: create grooup or list all groups
 
-II **RetrieveGroup**: get order by id
+**/api/groups/<int:pk>**: get order by id
 
 
 ## COMMENTS
 
-I **CommentOrderCreate**: manager can leave a comment under order
+**/api/comments/<int:pk>/comments**: manager can leave a comment under order
 
 
 ## Installation
